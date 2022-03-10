@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Http\Traits\LocalScope;
 use App\Http\Traits\ModelScopes;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -10,7 +11,7 @@ use Illuminate\Support\Facades\Auth;
 
 class Product extends Model
 {
-  use HasFactory;
+  use HasFactory , LocalScope;
  
   protected $fillable = [
     'name',
@@ -56,8 +57,8 @@ class Product extends Model
     return $carbondate->diffForHumans();
   }
 
-  public function scopeSelf($query)
-  {
-    return $query->where('user_id',Auth()->user()->id);
-  }
+  // public function scopeSelf($query)
+  // {
+  //   return $query->where('user_id',Auth()->user()->id);
+  // }
 }

@@ -2,12 +2,13 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
+use App\Http\Traits\LocalScope;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Category extends Model
 {
-    use HasFactory;
+    use HasFactory, LocalScope;
     protected $fillable = [
         'category_name', 'user_id'
     ];
@@ -21,8 +22,8 @@ class Category extends Model
         return $this->hasMany(Product::class);
     }
     
-    public function scopeSelf($query){
-        return $query->where('user_id',Auth()->user()->id);
-    }
+    // public function scopeSelf($query){
+    //     return $query->where('user_id',Auth()->user()->id);
+    // }
 
 }
