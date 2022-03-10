@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Traits\ModelScopes;
 use App\Models\Product;
 use App\Models\Variant;
 use App\Models\Category;
@@ -13,6 +14,7 @@ use Illuminate\Support\Facades\Auth;
 
 class ProductController extends Controller
 {
+    use ModelScopes;
     public function indexVariant(Request $request)
     {
         $product_id = request()->id;
@@ -38,10 +40,9 @@ class ProductController extends Controller
     {
 
         if (request()->ajax()) {
-            //$id = Auth()->user()->id;
-            // return $id;
-            $product = Product::usersProCatSub()->get();
-            //  dd($product);
+     
+            $product = $this->scopeProduct(new Product());
+            // return $product;
             return Datatables::of($product)
                 ->setRowClass('{{ $id %2==0 ? "alert-success" : "alert-warning"}}')
                 ->setRowId(function ($product) {

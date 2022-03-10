@@ -2,22 +2,24 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Traits\ModelScopes;
 use App\Models\Category;
 use App\Models\Subcategory;
 use Illuminate\Http\Request;
 
 class SubCategoryController extends Controller
 {
+    use ModelScopes;
     public function index()
-    { 
-         $id= auth()->user()->id;
-        $subcategories = Subcategory::where('user_id','=',$id)->get();
+    {
+
+        $subcategories = $this->scopeSubcat(new Subcategory());
 
         return view('subcategory.index', compact('subcategories'));
     }
     public function create()
-    { $id = Auth()->user()->id;
-        $categories = Category::where('user_id', '=', $id)->get();
+    {
+        $categories = $this->scopeCategory(new Category());
         return view('subcategory.createSubcategory', compact('categories'));
     }
     public function store(Request $request)

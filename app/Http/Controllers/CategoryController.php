@@ -2,22 +2,27 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Traits\ModelScopes;
 use App\Models\Category;
 use App\Models\Product;
 use Illuminate\Http\Request;
 
 class CategoryController extends Controller
 {
+    use ModelScopes;
     public function index()
     {
         $id = Auth()->user()->id;
-        $categories = Category::where('user_id','=',$id)->with('products')->get();
+     //   $categories = Category::where('user_id','=',$id)->with('products')->get();
+        $categories = $this->scopeCategory(new Category());
+        // return $categories;
         // $categories = Category::whereHas('products', function($query) use($id){
         //     return $query->where('user_id','=',$id);
         // })->get();
         //all the products with category
-        $products = Product::where('user_id','=',$id)->get();
-       // return  $products;
+       // $products = Product::where('user_id','=',$id)->get();
+       $products = $this->scopeProduct(new Product());
+      //  return  $products;
 
         return view('category.index', [
             'categories' => $categories,

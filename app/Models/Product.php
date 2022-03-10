@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Http\Traits\ModelScopes;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -10,6 +11,7 @@ use Illuminate\Support\Facades\Auth;
 class Product extends Model
 {
   use HasFactory;
+ 
   protected $fillable = [
     'name',
     'image',
@@ -54,7 +56,7 @@ class Product extends Model
     return $carbondate->diffForHumans();
   }
 
-  public function scopeUsersProCatSub($query){
-    return $query->where('user_id','=',Auth()->user()->id);
-  }
+  // public function scopeUsersProCatSub($query){
+  //   return $query->where('user_id','=',Auth()->user()->id);
+  // }
 }
