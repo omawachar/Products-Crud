@@ -41,7 +41,7 @@ class ProductController extends Controller
 
         if (request()->ajax()) {
      
-            $product = Product::selfPro()->get();
+            $product = Product::self()->get();
             // return $product;
             return Datatables::of($product)
                 ->setRowClass('{{ $id %2==0 ? "alert-success" : "alert-warning"}}')
@@ -67,7 +67,7 @@ class ProductController extends Controller
                 ->make(true);
         }
 
-        $categories = Category::all();
+        $categories = Category::self()->get();
         return view('product.index', compact('categories'));
     }
 
@@ -98,7 +98,7 @@ class ProductController extends Controller
 
     public function create()
     {
-        $categories = Category::all();
+        $categories = Category::self()->get();
 
         return view('product.create', compact('categories'));
     }
@@ -156,7 +156,7 @@ class ProductController extends Controller
 
         $product = Product::with('subcategories')->findOrFail($id);
         $productSubcategories =  $product->subcategories->pluck('id');
-        $categories = Category::all();
+        $categories = Category::self()->get();
         $subs = Subcategory::where('category_id', $product->category_id)->get();
         //     return view('product.index', compact('product', 'categories', 'subs', 'productSubcategories'));
         if ($product) {

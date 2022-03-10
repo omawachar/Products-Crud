@@ -13,16 +13,16 @@ class CategoryController extends Controller
     public function index()
     {
         $id = Auth()->user()->id;
-     //   $categories = Category::where('user_id','=',$id)->with('products')->get();
+        //   $categories = Category::where('user_id','=',$id)->with('products')->get();
         $categories = Category::self()->get();
-       
+
         // return $categories;
         // $categories = Category::whereHas('products', function($query) use($id){
         //     return $query->where('user_id','=',$id);
         // })->get();
         //all the products with category
-       // $products = Product::where('user_id','=',$id)->get();
-       $products = $this->scopeProduct(new Product());
+        // $products = Product::where('user_id','=',$id)->get();
+        $products = Product::self()->get();
       //  return  $products;
 
         return view('category.index', [

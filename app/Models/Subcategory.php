@@ -21,4 +21,9 @@ class Subcategory extends Model
     public function products(){
         return $this->belongsToMany(Product::class);
     }
+
+    public function scopeSelf($query)
+    {
+        return $query->where('user_id', Auth()->user()->id);
+    }
 }

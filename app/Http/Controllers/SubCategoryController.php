@@ -13,13 +13,13 @@ class SubCategoryController extends Controller
     public function index()
     {
 
-        $subcategories = $this->scopeSubcat(new Subcategory());
+        $subcategories = Subcategory::self()->get();
 
         return view('subcategory.index', compact('subcategories'));
     }
     public function create()
     {
-        $categories = $this->scopeCategory(new Category());
+        $categories = Category::self()->get();
         return view('subcategory.createSubcategory', compact('categories'));
     }
     public function store(Request $request)
@@ -37,7 +37,7 @@ class SubCategoryController extends Controller
     }
     public function edit($id)
     {
-        $categories =Category::all();
+        $categories = Category::self()->get();
         $subCategory = Subcategory::findOrFail($id);
         return view('subcategory.updateSubcategory', compact('subCategory', 'categories'));
     }
