@@ -14,7 +14,8 @@ class CategoryController extends Controller
     {
         $id = Auth()->user()->id;
      //   $categories = Category::where('user_id','=',$id)->with('products')->get();
-        $categories = $this->scopeCategory(new Category());
+        $categories = Category::self()->get();
+       
         // return $categories;
         // $categories = Category::whereHas('products', function($query) use($id){
         //     return $query->where('user_id','=',$id);

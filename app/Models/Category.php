@@ -20,4 +20,9 @@ class Category extends Model
     {
         return $this->hasMany(Product::class);
     }
+    
+    public function scopeSelf($query){
+        return $query->where('user_id',Auth()->user()->id);
+    }
+
 }

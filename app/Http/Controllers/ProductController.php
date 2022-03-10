@@ -41,7 +41,7 @@ class ProductController extends Controller
 
         if (request()->ajax()) {
      
-            $product = $this->scopeProduct(new Product());
+            $product = Product::selfPro()->get();
             // return $product;
             return Datatables::of($product)
                 ->setRowClass('{{ $id %2==0 ? "alert-success" : "alert-warning"}}')

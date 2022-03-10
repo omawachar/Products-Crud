@@ -56,7 +56,7 @@ class Product extends Model
     return $carbondate->diffForHumans();
   }
 
-  // public function scopeUsersProCatSub($query){
-  //   return $query->where('user_id','=',Auth()->user()->id);
-  // }
+  public function scopeSelfPro($query){
+    return $query->where('user_id',Auth()->user()->id);
+  }
 }
