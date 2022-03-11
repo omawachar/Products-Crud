@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\StoreSubcatRequest;
 use App\Http\Traits\ModelScopes;
 use App\Models\Category;
 use App\Models\Subcategory;
@@ -22,14 +23,10 @@ class SubCategoryController extends Controller
         $categories = Category::self()->get();
         return view('subcategory.createSubcategory', compact('categories'));
     }
-    public function store(Request $request)
+    public function store(StoreSubcatRequest $request)
     {
-        $attributes = request()->validate([
-
-            'category_id' => 'required',
-            'name' => 'required|min:2',
-            'user_id'=>'required'
-        ]);
+        return $request;
+      
         $attributes['user_id'] = $request->user_id;
         $attributes = $request->all();
         Subcategory::create($attributes);

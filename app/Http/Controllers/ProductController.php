@@ -2,15 +2,17 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Traits\ModelScopes;
 use App\Models\Product;
 use App\Models\Variant;
 use App\Models\Category;
 use App\Models\Subcategory;
 use Illuminate\Http\Request;
+use App\Http\Traits\ModelScopes;
 use Yajra\DataTables\DataTables;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
+use App\Http\Requests\StoreProFormValidation;
+use App\Http\Requests\UpdateProFormValidation;
 
 class ProductController extends Controller
 {
@@ -40,8 +42,16 @@ class ProductController extends Controller
     {
 
         if (request()->ajax()) {
-     
-            $product = Product::self()->get();
+
+            $product = Product::select('*');
+            if ($request->filled('category_id')) {
+
+                $product->whereHas('category', function ($q) use ($request) {
+                    $q->where('id', $request->category_id);
+                });
+            }
+
+            $product->get();
             // return $product;
             return Datatables::of($product)
                 ->setRowClass('{{ $id %2==0 ? "alert-success" : "alert-warning"}}')
@@ -95,28 +105,18 @@ class ProductController extends Controller
 
     }
 
-
     public function create()
     {
         $categories = Category::self()->get();
-
         return view('product.create', compact('categories'));
     }
 
-
-    public function store(Request $request)
+    //this mewthod is used to store the product into database
+    public function store(StoreProFormValidation $request)
     {
-        // return 3434;
-        // return $request->image;
-        $attributes = request()->validate([
-            'name' => 'required|min:2',
-            'category_id' => 'required',
-            'user_id' => 'required',
-        ]);
-
+    
         $attributes['category_id'] = $request->category_id;
         $request->merge(['is_active' => $request->is_active ?? '0']);
-
         $attributes = $request->all();
         if ($request->hasFile('image')) {
             $attributes['image'] =  upload($request->image, 'products'); // products/asdfajerkuaher.jpg
@@ -137,23 +137,10 @@ class ProductController extends Controller
     }
 
 
-    public function subCat(Request $request)
-    {
 
-
-        $category_id = $request->cat_id;
-
-        $subcategories = Category::where('id', $category_id)
-            ->with('subcategories')
-            ->get();
-        return response()->json([
-            'subcategories' => $subcategories
-        ]);
-    }
 
     public function edit($id)
     {
-
         $product = Product::with('subcategories')->findOrFail($id);
         $productSubcategories =  $product->subcategories->pluck('id');
         $categories = Category::self()->get();
@@ -177,16 +164,12 @@ class ProductController extends Controller
     }
 
 
-    public function update(Request $request)
+    public function update(UpdateProFormValidation $request)
     {
 
         $id = $request->id;
         $product = Product::findOrFail($id);
-        $attributes = request()->validate([
-            'name' => 'required|min:2',
-            'category_id' => 'required',
-            'subcategory' => 'required'
-        ]);
+       
         $request->merge(['is_active' => $request->is_active ?? '0']);
         $attributes = $request->all();
         $subcats = $request->subcategory;
@@ -199,6 +182,29 @@ class ProductController extends Controller
         ]);
         //$attributes = $request->all();
     }
+
+    public function filterProducts(Request $request)
+    {
+        $cat_id = $request->cat_id;
+        $products = Product::where('category_id', $cat_id)->get();
+        return response()->json([
+            'products' => $products
+        ]);
+    }
+
+    public function subCat(Request $request)
+    {
+        $category_id = $request->cat_id;
+        $subcategories = Category::where('id', $category_id)
+            ->with('subcategories')
+            ->get();
+        return response()->json([
+            'subcategories' => $subcategories
+        ]);
+    }
+
+
+
 
     public function delete($id)
     {

@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\StoreCatFormValidation;
+use App\Http\Requests\updateCatFormValidation;
 use App\Http\Traits\ModelScopes;
 use App\Models\Category;
 use App\Models\Product;
@@ -37,13 +39,10 @@ class CategoryController extends Controller
     }
 
 
-    public function store(Request $request)
+    public function store(StoreCatFormValidation $request)
     {
-      //  return   $request->user_id;
-        $attributes = request()->validate([
-            'category_name' => 'required|min:2',
-            'user_id'=>'required'
-        ]);
+        //  return   $request->user_id; 
+        $attributes = $request->validated();
         $attributes['user_id'] = $request->user_id;
         $attributes = $request->all();
         Category::create($attributes);
@@ -56,14 +55,12 @@ class CategoryController extends Controller
         return view('category.update', compact('category'));
     }
 
-    public function update(Request $request)
+    public function update(updateCatFormValidation $request)
     {
         $id = $request->id;
         $category = Category::findOrFail($id);
 
-        $request->validate([
-            'category_name' => 'required|min:2',
-        ]);
+        
 
         $attributes = $request->all();
 

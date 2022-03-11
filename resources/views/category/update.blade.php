@@ -23,6 +23,13 @@
     <div class="container">
         <h1 class="text-center mt-4"> Update Category </h1>
         <br>
+        <div>
+            @if (count($errors) > 0)
+            @foreach ($errors->all() as $error)
+            <p class="alert alert-danger">{{ $error }}</p>
+            @endforeach
+            @endif
+        </div>
         <br>
 
         <form id="update" method="POST" action="{{url('update')}}" autocomplete="off" enctype="multipart/form-data">

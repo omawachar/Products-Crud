@@ -57,8 +57,4 @@ class Product extends Model
     return $carbondate->diffForHumans();
   }
 
-  // public function scopeSelf($query)
-  // {
-  //   return $query->where('user_id',Auth()->user()->id);
-  // }
 }

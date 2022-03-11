@@ -47,6 +47,7 @@ Route::group(['middleware'=>'auth'],function(){
     Route::post('updateProduct', [ProductController::class, 'update']);
     Route::get('delete/{id}', [ProductController::class, 'delete']);
     Route::post('getSubCat', [ProductController::class, 'subcat']);
+Route::post('get-products',[ProductController::class,'filterProducts']);
 
     Route::post('add-remove-variant', [ProductController::class, 'storeVariant']);
     Route::get('getProductsVariant/{id}', [ProductController::class, 'getVariants']);

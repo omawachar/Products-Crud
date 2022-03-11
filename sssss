@@ -1,0 +1,29 @@
+[33mcommit db44efd7142118a9db4023b2842d761791226479[m[33m ([m[1;36mHEAD -> [m[1;32mtraitswithscope[m[33m, [m[1;31morigin/traitswithscope[m[33m)[m
+Author: Om Awachar <='awacharom@gmail.com>
+Date:   Thu Mar 10 16:40:21 2022 +0530
+
+    final corrections for traits with scope
+
+[33mcommit 545b918d965999c6aede129a361900f782fe51cc[m
+Author: Om Awachar <='awacharom@gmail.com>
+Date:   Thu Mar 10 16:27:00 2022 +0530
+
+    some more changes
+
+[33mcommit 757d2d4d18c490381c7ad0f99b441e629cd028b5[m
+Author: Om Awachar <='awacharom@gmail.com>
+Date:   Thu Mar 10 16:06:37 2022 +0530
+
+    Corrections
+
+[33mcommit 587ac7f5b855938b07f9305ee5e7bf5137b17df2[m
+Author: Om Awachar <='awacharom@gmail.com>
+Date:   Thu Mar 10 12:37:50 2022 +0530
+
+    implemented scope in trait
+
+[33mcommit 3a498cc3385ef9a9f5422e617a3c1ba7630e7618[m[33m ([m[1;31morigin/master[m[33m, [m[1;32mmaster[m[33m)[m
+Author: Om Awachar <='awacharom@gmail.com>
+Date:   Thu Mar 10 11:47:07 2022 +0530
+
+    first commit

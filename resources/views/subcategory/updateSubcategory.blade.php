@@ -23,6 +23,13 @@
     <div class="container">
         <h1 class="text-center mt-4"> Update Subcategory </h1>
         <br>
+        <div>
+            @if (count($errors) > 0)
+            @foreach ($errors->all() as $error)
+            <p class="alert alert-danger">{{ $error }}</p>
+            @endforeach
+            @endif
+        </div>
         <br>
         <form action="{{url('updateSubcategory')}}" id="updateSubcategory" method="POST" name="updateSubcategory" autocomplete="off" enctype="multipart/form-data">
             @csrf

@@ -302,10 +302,8 @@
                 }
             ]
         });
-
         $('#category').select2({
             placeholder: "Select Category",
-
             dropdownParent: $('#exampleModal'),
             dropdownPosition: 'below'
         }).on('change', function(e) {
@@ -333,9 +331,7 @@
         $('#subcategory').select2({
             placeholder: 'Select subcategory',
             dropdownParent: $('#exampleModal'),
-
         });
-
         $('#image').change(function() {
             let reader = new FileReader();
             reader.onload = (e) => {
@@ -343,8 +339,6 @@
             }
             reader.readAsDataURL(this.files[0]);
         });
-
-
         //add product
         $('#addForm').on('submit', function(e) {
             e.preventDefault();
@@ -361,7 +355,6 @@
                 contentType: false,
                 processData: false,
                 success: function(response) {
-
                     if (response.status == 200) {
                         alert(response.message);
                         $('#exampleModal').modal('hide');
@@ -370,31 +363,22 @@
                         var oTable = $('#myTable').DataTable();
                         oTable.ajax.reload();
                     } else {
-
                         $('#exampleModal').modal('hide');
                         console.log(response.message);
                     }
-
                     // to reload
-
-
                 },
                 error: function(error) {
                     console.log(error);
                     alert("Data not Saved");
                 },
-
             });
         })
-
-
         $('#exampleModal').on('hidden.bs.modal', function() {
             //Close Modal
             //  console.log("modal close");
             $('#category').val([]).change();
             clear();
-
-
         });
 
         function clear() {
@@ -402,29 +386,20 @@
             $("#image").val("");
             $("#category").val("");
             $("#subcategory").val("");
-
         }
-
-
-
         // <!-- editmodal -->
-
         $('body').on('click', '#getEditProductData', function(e) {
             var id = $(this).data('id');
-
             $('#editProductModal').modal('show');
-
             $('#editCategory').select2({
                 placeholder: 'Select Category',
                 dropdownParent: $('#editProductModal'),
             });
-
             $.ajax({
                 url: "editProduct/" + id,
                 method: 'GET',
                 success: function(response) {
                     console.log(response);
-
                     if (response == 404) {
                         $('#success_message').html("");
                         $('#success_message').addClass('aler aler-danger');
@@ -450,12 +425,10 @@
                                 );
                             }
                         });
-
                         //subcategory select2
                         $('#edit_subcategory').empty();
                         var product_subcatCatgory = [];
                         $.each(response.product.subcategories, function(index, value) {
-
                             product_subcatCatgory[index++] = value.id;
                         });
                         console.log(product_subcatCatgory);
@@ -466,16 +439,11 @@
                                 $('#edit_subcategory').append(
                                     `<option value="${value.id}" selected > ${value.name} </option>`
                                 );
-                            } else {
-
-                            }
+                            } else {}
                         });
-
                     } //end of category
-
                 } //end of ajax succss
             }); //end of ajax call
-
             // category onchange
             $('#edit_category').select2({
                 placeholder: 'Select Category',
@@ -486,7 +454,6 @@
                 $.ajax({
                     url: "{{ url('getSubCat') }}",
                     type: "POST",
-
                     data: {
                         cat_id: cat_id
                     },
@@ -510,7 +477,6 @@
                 multiple: true,
                 dropdownParent: $('#editProductModal'),
             });
-
             //update button click
             $('#editForm').on('submit', function(e) {
                 e.preventDefault();
@@ -529,7 +495,6 @@
                         var oTable = $('#myTable').DataTable();
                         // to reload
                         oTable.ajax.reload();
-
                     },
                     error: function(error) {
                         console.log(error);
@@ -537,10 +502,7 @@
                     }
                 });
             })
-
         });
-
-
         // delete product
         $('body').on('click', '#getDeleteProduct', function(e) {
             e.preventDefault();
@@ -548,7 +510,6 @@
             //    alert(product_delete_id);
             $('#deleteProductModal').modal('show');
             $('#delete_product_id').val(product_delete_id);
-
             //   var url = "/delete/" + product_id;
             $('#deleteForm').on('submit', function(e) {
                 e.preventDefault();
@@ -558,16 +519,13 @@
                     type: "GET",
                     url: "{{ url('delete')  }}" + "/" + product_id,
                     data: $('#deleteForm').serialize(),
-
                     success: function(response) {
                         $('#deleteProductModal').modal('hide');
                         alert(response.message);
                         var oTable = $('#myTable').DataTable();
                         // to reload
                         oTable.ajax.reload();
-
                     }
-
                 });
             });
         });
@@ -578,25 +536,18 @@
             // alert(product_id);
             $('#add-remove-variant-modal').modal('show');
             $('#product_id').val(product_id);
-
             $('#add-remove-variant-form').on('submit', function(e) {
-
                 e.preventDefault();
-
                 $.ajax({
                     type: 'POST',
                     url: "{{ url('add-remove-variant') }}",
                     data: $('#add-remove-variant-form').serialize(),
                     dataType: "json",
                     success: function(response) {
-
                         console.log(response);
-
-
                     }
                 });
             });
-
             var i = 0;
             $("#add-btn").click(function() {
                 ++i;
@@ -612,30 +563,19 @@
                 $('#name').val([]).change();
                 $('#price').val([]).change();
                 $('#product_id').val([]).change();
-
-
-
             });
-
         }); //end of add-remove-varaint modal
-
-
         $('body').on('click', '#getShowVariants', function(e) {
             e.preventDefault();
             var tableHeadingRemoced;
             var product_id = $(this).data('id');
             console.log("ajax product id " + product_id);
-
-
             $.ajax({
                 url: "getProductsVariant/" + product_id,
                 method: 'GET',
                 success: function(response) {
-
                     if (response.status == 1) {
-
                         $('#showVariantModal').modal('show');
-
                         $('#product_variant_title').text(`Product Id ${product_id}`);
                         console.log(response.variants);
                         console.log(response.variants.length);
@@ -644,16 +584,13 @@
                         <th>Sr No</th>
                         <th>Name</th>
                         <th>Price</th>
-
                     </tr>`
                         );
                         for ($i = 0; $i < response.variants.length; $i++) {
-
                             $("#showAllVariantsTable").append(`<tr>
                                <td><input type="text" value="${$i+1}" placeholder="Id" class="form-control" /></td>
                             <td><input type="text" value="${response.variants[$i].name}" placeholder="title" class="form-control" /></td>
                              <td><input type="text" value="${response.variants[$i].price}" placeholder="Price" class="form-control" /></td>
-
                             </tr>`);
                         }
                     } else {
@@ -661,22 +598,16 @@
                     }
                 }
             });
-
-
             $('#showVariantModal').on('hidden.bs.modal', function() {
                 $("#showAllVariantsTable > tbody").empty();
                 tableHeadingRemoced = true;
-
                 console.log('modal close');
                 // $(this).find('#showAllVariantsTable').trigger('reset');
             })
-
             if (tableHeadingRemoced) {
                 console.log('xxxx');
-
             }
         });
-
     }); //end of document.ready
 </script>
 
