@@ -3,12 +3,14 @@
 namespace App\Models;
 
 use App\Http\Traits\LocalScope;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Subcategory extends Model
 {
-    use HasFactory, LocalScope;
+    use HasFactory, LocalScope, SoftDeletes;
+    protected $dates = ['deleted_at'];
     protected $fillable=[
         'category_id',
         'name',

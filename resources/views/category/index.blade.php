@@ -32,6 +32,7 @@
                                 <th>SNo.</th>
                                 <th>Category</th>
                                 <th>Products</th>
+                                <th>Count</th>
                                 <th>Action</t h>
                             </thead>
                             <tbody>
@@ -46,6 +47,7 @@
 
                                         @endforeach
                                     </td>
+                                   <td>{{$category->products_count}}</td>
                                     <td><a href="edit/{{$category->id}}">Edit</a> <a onclick="confirmDelete('this')" href="">Delete</a></td>
 
                                 </tr>

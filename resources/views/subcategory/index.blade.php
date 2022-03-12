@@ -27,6 +27,7 @@
                                 <th>Sr No.</th>
                                 <th>Category</th>
                                 <th>Subcategory</th>
+                                <th>Subcat Product count</th>
                                 <th>Action</t h>
                             </thead>
                             <tbody>
@@ -35,7 +36,7 @@
                                     <td>{{$subcategory->id}}</td>
                                     <td>{{$subcategory->category->category_name}}</td>
                                     <td>{{$subcategory->name}}</td>
-
+                                    <td>{{$subcategory->products_count}}</td>
                                     <td><a href="editSubcategory/{{$subcategory->id}}">Edit</a> <a onclick="confirmDelete('this')" href="">Delete</a></td>
 
                                 </tr>

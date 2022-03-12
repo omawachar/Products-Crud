@@ -6,7 +6,10 @@ use App\Http\Requests\StoreSubcatRequest;
 use App\Http\Traits\ModelScopes;
 use App\Models\Category;
 use App\Models\Subcategory;
+use Exception;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+
 
 class SubCategoryController extends Controller
 {
@@ -14,8 +17,8 @@ class SubCategoryController extends Controller
     public function index()
     {
 
-        $subcategories = Subcategory::self()->get();
-
+        $subcategories = Subcategory::with('category')->self()->withCount('products')->get();
+    //return $subcategories;
         return view('subcategory.index', compact('subcategories'));
     }
     public function create()
@@ -29,7 +32,15 @@ class SubCategoryController extends Controller
       
         $attributes['user_id'] = $request->user_id;
         $attributes = $request->all();
-        Subcategory::create($attributes);
+
+        DB::beginTransaction();
+        try {
+            Subcategory::create($attributes);
+            DB::commit();
+        } catch (Exception $e) {
+            DB::rollBack();
+            throw $e;
+        }
         return redirect('subcategories')->with('message', 'SubCategory Addedd SuccessFully');
     }
     public function edit($id)

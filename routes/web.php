@@ -1,41 +1,49 @@
 <?php
 
+use App\Models\Subcategory;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\PlayController;
 use App\Http\Controllers\ProductController;
+use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\RegisterController;
 use App\Http\Controllers\SessionsController;
 use App\Http\Controllers\SubCategoryController;
-use App\Models\Subcategory;
 
 /*
 |--------------------------------------------------------------------------
 | Web Routes
 |--------------------------------------------------------------------------
 |
-| Here is where you can register web routes for your application. These
+| Here is where you can register web routes for your application. These 
 | routes are loaded by the RouteServiceProvider within a group which
 | contains the "web" middleware group. Now create something great!
 |
 */
 
 // apply 
-Route::group(['middleware'=>'auth'],function(){
+Route::group(['middleware' => 'auth',], function () {
     // Category Routes
+
+    Route::group(['middleware' => 'admin',], function () {
+
+        Route::get('createCategory', [CategoryController::class, 'create']);
+        Route::post('createCategory', [CategoryController::class, 'store']);
+
+        Route::post('update', [CategoryController::class, 'update']);
+        Route::get('createSubcategory', [SubCategoryController::class, 'create']);
+        Route::post('createSubcategory', [SubCategoryController::class, 'store']);
+        Route::get('editSubcategory/{id}', [SubCategoryController::class, 'edit']);
+        Route::post('updateSubcategory', [SubCategoryController::class, 'update']);
+    });
+
+    Route::get('edit/{id}', [CategoryController::class, 'edit']);
     Route::get('categories', [CategoryController::class, 'index']);
 
-    Route::get('createCategory', [CategoryController::class, 'create']);
-    Route::post('createCategory', [CategoryController::class, 'store']);
-    Route::get('edit/{id}', [CategoryController::class, 'edit']);
-    Route::post('update', [CategoryController::class, 'update']);
     Route::get('delete/{id}', [CategoryController::class, 'delete']);
 
     // sub categories routes
     Route::get('subcategories', [SubCategoryController::class, 'index']);
-    Route::get('createSubcategory', [SubCategoryController::class, 'create']);
-    Route::post('createSubcategory', [SubCategoryController::class, 'store']);
-    Route::get('editSubcategory/{id}', [SubCategoryController::class, 'edit']);
-    Route::post('updateSubcategory', [SubCategoryController::class, 'update']);
+    
 
     Route::get('subcategory/delete/{id}', [SubCategoryController::class, 'delete']);
 
@@ -55,6 +63,8 @@ Route::post('get-products',[ProductController::class,'filterProducts']);
 
 
 });
+
+Route::get('play', [PlayController::class, 'index']);
 
 
 //Register user routes

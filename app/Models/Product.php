@@ -2,16 +2,18 @@
 
 namespace App\Models;
 
+use Carbon\Carbon;
 use App\Http\Traits\LocalScope;
 use App\Http\Traits\ModelScopes;
-use Carbon\Carbon;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Product extends Model
 {
-  use HasFactory , LocalScope;
+  use HasFactory , LocalScope, SoftDeletes;
+  //protected $dates = ['deleted_at'];
  
   protected $fillable = [
     'name',

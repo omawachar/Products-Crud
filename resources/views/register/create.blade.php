@@ -8,6 +8,7 @@
     <title>Document</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
+
     <link rel="stylesheet" href="css/app.css">
     <style>
         form .error {
@@ -26,7 +27,15 @@
                         <div class="card" style="border-radius: 15px;">
                             <div class="card-body p-5">
                                 <h2 class="text-uppercase text-center mb-5">Create an account</h2>
-
+                                <div>
+                                    <ul class="list">
+                                        @if (count($errors) > 0)
+                                        @foreach ($errors->all() as $error)
+                                        <li class="list-item alert alert-danger">{{$error}}</li>
+                                        @endforeach
+                                        @endif
+                                    </ul>
+                                </div>
                                 <form method="POST" action="/register" id="formRegister" autocomplete="off">
                                     @csrf
                                     <div class="form-outline mb-4">
@@ -49,11 +58,18 @@
                                         <input name="confirm_password" type="password" id="inputConfirmPassword" class="form-control form-control-lg" />
                                     </div>
 
-                                    <div class="form-check d-flex justify-content-center mb-5">
-                                        <input class="form-check-input me-2" type="checkbox" value="" id="form2Example3cg" />
+                                    <div class="form-check   mb-5">
+                                        <select class="js-example-basic-single" name="role" placeholder="Select Role" >
+                                            <option value="">Select Role</option>
+                                            <option value="1">Admin</option>
+                                            <option value="2">Editor</option>
+                                        </select>
+
+
+                                        <!-- <input class="form-check-input me-2" type="checkbox" value="" id="form2Example3cg" />
                                         <label class="form-check-label" for="form2Example3g">
                                             I agree all statements in <a href="#!" class="text-body"><u>Terms of service</u></a>
-                                        </label>
+                                        </label> -->
                                     </div>
 
                                     <div class="d-flex justify-content-center">
@@ -73,7 +89,7 @@
     </section>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.1/jquery.validate.min.js"></script>
-    <script src="/js/jquery-form-validation.js"></script>
+    <!-- <script src="/js/jquery-form-validation.js"></script> -->
 
 </body>
 

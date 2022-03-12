@@ -10,6 +10,25 @@
             <div id="success_message"></div>
             <div class="card">
                 <div class="card-header">
+                    <div class="flex">
+                        <div>
+                            <select class="js-example-basic-single " style="width:15%;" name="cat_filter" id="cat_filter">
+                                <option></option>
+                                @foreach($categories as $category)
+                                <option value="{{$category->id}}">{{$category->category_name}}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                        <br>
+                        <div>
+                            <select class="js-example-basic-single " style="width:15%;" name="isActive_filter" id="isActive_filter">
+                                <option></option>
+                                <option value="1">Active</option>
+                                <option value="0">Inactive</option>
+
+                            </select>
+                        </div>
+                    </div>
                     <h2 class="text-center">
                         Products
                         <button type="button" class="btn btn-primary float-end" data-bs-toggle="modal" data-bs-target="#exampleModal">Add Product</button>
@@ -38,7 +57,7 @@
     <!-- <a class="btn btn-primary" href="addProduct"> Add Product</a> -->
 
 </div>
-<!--add student data modal -->
+<!--add product data modal -->
 <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
@@ -77,7 +96,7 @@
                         </select>
                     </div>
                     <div class="form-check">
-                        <input class="form-check-input" type="checkbox" name="is_active" value="" id="checkBoxProduct" checked>
+                        <input class="form-check-input" type="checkbox" name="is_active" value="1" id="checkBoxProduct" checked>
                         <label class="form-check-label" for="flexCheckDefault">
                             Product Active
                         </label>
@@ -265,43 +284,84 @@
 
 <script type="text/javascript">
     $(document).ready(function() {
-        clear();
-        $('#myTable').DataTable({
-            processing: true,
-            serverSide: true,
-            searching: false,
-            order: [
-                [0, 'dsc']
-            ],
-            ajax: "{!! route('get.products') !!}",
-            columns: [{
-                    data: 'id',
-                    name: 'id'
+        function productDatatable(category_id, is_active) {
+            clear();
+            console.log(category_id, "  active status:" + is_active)
+            // var category_id = cat;
+            // var is_active = 0;
+            $('#myTable').DataTable({
+                processing: true,
+                serverSide: true,
+                searching: false,
+                order: [
+                    [0, 'dsc']
+                ],
+                ajax: {
+                    url: "{!! route('get.products') !!}",
+                    data: {
+                        category_id: category_id,
+                        is_active
+                    },
                 },
-                {
-                    data: 'name',
-                    name: 'name'
-                },
-                {
-                    data: 'category',
-                    name: 'category'
-                },
-                {
-                    data: 'created_at',
-                    name: 'created_at'
-                },
-                {
-                    data: 'updated_at',
-                    name: 'updated_at'
-                },
-                {
-                    data: 'action',
-                    name: 'action',
-                    orderable: false,
-                    searchable: false
-                }
-            ]
-        });
+                // ajax: "{!! route('get.products') !!}",
+                // data: {
+                //     category_id: category_id,
+                //     is_active: is_active
+                // },
+                columns: [{
+                        data: 'id',
+                        name: 'id'
+                    },
+                    {
+                        data: 'name',
+                        name: 'name'
+                    },
+                    {
+                        data: 'category',
+                        name: 'category'
+                    },
+                    {
+                        data: 'created_at',
+                        name: 'created_at'
+                    },
+                    {
+                        data: 'updated_at',
+                        name: 'updated_at'
+                    },
+                    {
+                        data: 'action',
+                        name: 'action',
+                        orderable: false,
+                        searchable: false
+                    }
+                ]
+            });
+        }
+        productDatatable();
+        //filter for category and products is_active
+        $('#cat_filter').select2({
+            placeholder: "Category filter",
+
+        }).on('change', function(e) {
+            var category_id = e.target.value;
+            var active = "";
+            //   console.log(category_id);
+            $('#myTable').DataTable().destroy();
+            productDatatable(category_id, active);
+        })
+
+        //filter products by active or inactive
+        $('#isActive_filter').select2({
+            placeholder: "Status filter",
+        }).on('change', function(e) {
+            var active = e.target.value;
+            var category_id = "";
+            // console.log(active);
+            $('#myTable').DataTable().destroy();
+            productDatatable(category_id, active);
+        })
+
+
         $('#category').select2({
             placeholder: "Select Category",
             dropdownParent: $('#exampleModal'),
@@ -359,7 +419,7 @@
                         alert(response.message);
                         $('#exampleModal').modal('hide');
                         clear();
-                        console.log(response);
+                        //      console.log(response);
                         var oTable = $('#myTable').DataTable();
                         oTable.ajax.reload();
                     } else {

@@ -40,17 +40,22 @@ class ProductController extends Controller
 
     public function index(Request $request)
     {
+//return Product::onlyTrashed()->get();
 
         if (request()->ajax()) {
 
             $product = Product::select('*');
+            $product->self();
             if ($request->filled('category_id')) {
-
                 $product->whereHas('category', function ($q) use ($request) {
                     $q->where('id', $request->category_id);
                 });
             }
 
+            if ($request->filled('is_active')) {
+                $product->where('is_active', $request->is_active);
+            }
+            $product->with('category');
             $product->get();
             // return $product;
             return Datatables::of($product)
@@ -116,18 +121,22 @@ class ProductController extends Controller
     {
     
         $attributes['category_id'] = $request->category_id;
-        $request->merge(['is_active' => $request->is_active ?? '0']);
+        // $attributes['is_active'] = $request->is_active;
+        $request->merge(['is_active' => ($request->is_active) ? '1' : '0']);
         $attributes = $request->all();
+       // return $attributes;
         if ($request->hasFile('image')) {
             $attributes['image'] =  upload($request->image, 'products'); // products/asdfajerkuaher.jpg
         }
 
 
         //  return $request->subcategory;
+        DB::transaction(function () use ($attributes, $request) {
+            $product = Product::Create($attributes);
 
-        $product = Product::Create($attributes);
-
-        $product->subcategories()->sync($request->subcategory);
+            $product->subcategories()->sync($request->subcategory);
+        });
+       
         // return $product;
         //   return redirect('/products');
         return response()->json([
@@ -174,8 +183,11 @@ class ProductController extends Controller
         $attributes = $request->all();
         $subcats = $request->subcategory;
         // return $attributes;
-        $product->update($attributes);
-        $product->subcategories()->sync($subcats);
+        DB::transaction(function () use($product,$attributes,$subcats){
+            $product->update($attributes);
+            $product->subcategories()->sync($subcats);
+        });
+      
         return response()->json([
             'status' => 200,
             'message' => 'Product Updated Successfully',
